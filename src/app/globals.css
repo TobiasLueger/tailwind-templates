@@ -19,3 +19,34 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+  
+  body {
+    @apply text-gray-900 antialiased;
+  }
+}
+
+@layer components {
+  .btn,
+  .btn-sm {
+    @apply font-medium inline-flex items-center justify-center border border-transparent rounded leading-snug transition duration-150 ease-in-out;
+  }
+
+  .btn {
+    @apply px-8 py-3;
+  }
+
+  .btn-sm {
+    @apply px-4 py-2;
+  }
+}
+
+@layer utilities {
+  .rtl {
+    direction: rtl;
+  }
+}
