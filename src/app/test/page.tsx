@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import HiddenObjectGame from '@/components/HiddenObjectGame';
 
 const quotes = [
   {
@@ -137,6 +138,21 @@ export default function TestPage() {
             </a>
           </motion.div>
         </motion.div>
+      </section>
+
+      {/* Game Section */}
+      <section id="game" className="min-h-screen flex items-center justify-center p-8">
+        <div className="w-full">
+          <motion.h2
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-3xl md:text-4xl font-bold mb-8 uppercase tracking-widest text-center"
+          >
+            The Scholar's Study
+          </motion.h2>
+          <HiddenObjectGame />
+        </div>
       </section>
 
       {/* About Section */}
