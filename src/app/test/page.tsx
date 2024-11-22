@@ -537,26 +537,48 @@ export default function TestPage() {
             { href: '#work', label: 'Work' },
             { href: '#contact', label: 'Contact' },
             { href: '#footer', label: 'Footer' }
-          ].map(({ href, label }, index) => (
-            <div key={href} className="relative group">
-              <a
-                href={href}
-                className={`block w-2.5 h-2.5 md:w-3 md:h-3 rounded-full border-2 border-[#e6d5b8] transition-all ${
-                  (index === 8 && scrollY + window.innerHeight >= document.documentElement.scrollHeight - 10) ||
-                  (scrollY >= index * window.innerHeight * 0.8 && scrollY < (index + 1) * window.innerHeight * 0.8)
-                    ? 'bg-[#e6d5b8]'
-                    : 'bg-transparent'
-                }`}
-                aria-label={label}
-              />
-              <span className="absolute md:right-full md:mr-8 md:top-1/2 md:-translate-y-1/2 
-                left-1/2 -translate-x-1/2 bottom-full mb-2
-                px-2 py-1 bg-[#1a1a1a] border border-[#e6d5b8] text-[#e6d5b8] text-xs 
-                whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
-                {label}
-              </span>
-            </div>
-          ))}
+          ].map(({ href, label }, index) => {
+            const [isActive, setIsActive] = useState(false);
+
+            useEffect(() => {
+              const updateActiveState = () => {
+                if (typeof window !== 'undefined') {
+                  const isLastItem = index === 8;
+                  if (isLastItem) {
+                    setIsActive(window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 10);
+                  } else {
+                    const sectionStart = index * window.innerHeight * 0.8;
+                    const sectionEnd = (index + 1) * window.innerHeight * 0.8;
+                    setIsActive(window.scrollY >= sectionStart && window.scrollY < sectionEnd);
+                  }
+                }
+              };
+
+              if (typeof window !== 'undefined') {
+                window.addEventListener('scroll', updateActiveState);
+                updateActiveState(); // Initial check
+                return () => window.removeEventListener('scroll', updateActiveState);
+              }
+            }, [index]);
+
+            return (
+              <div key={href} className="relative group">
+                <a
+                  href={href}
+                  className={`block w-2.5 h-2.5 md:w-3 md:h-3 rounded-full border-2 border-[#e6d5b8] transition-all ${
+                    isActive ? 'bg-[#e6d5b8]' : 'bg-transparent'
+                  }`}
+                  aria-label={label}
+                />
+                <span className="absolute md:right-full md:mr-8 md:top-1/2 md:-translate-y-1/2 
+                  left-1/2 -translate-x-1/2 bottom-full mb-2
+                  px-2 py-1 bg-[#1a1a1a] border border-[#e6d5b8] text-[#e6d5b8] text-xs 
+                  whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+                  {label}
+                </span>
+              </div>
+            );
+          })}
         </div>
       </div>
     </div>
